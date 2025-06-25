@@ -1,4 +1,4 @@
-# systemprompt-mcp-reddit
+# systemprompt-mcp-server
 
 [![npm version](https://img.shields.io/npm/v/@systemprompt/systemprompt-mcp-server.svg)](https://www.npmjs.com/package/@systemprompt/systemprompt-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -7,7 +7,7 @@
 
 [Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/documentation)
 
-## 💖 Sponsored by systemprompt.io
+## Sponsored by systemprompt.io
 
 This MCP server implementation is **sponsored by [systemprompt.io](https://systemprompt.io)** — creators of the **world's first native mobile MCP client for iOS and Android** — and provided completely **free and open source** to the community. 
 
