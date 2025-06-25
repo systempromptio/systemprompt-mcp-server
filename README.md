@@ -5,7 +5,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/tyingshoelaces_?style=social)](https://twitter.com/tyingshoelaces_)
 [![Discord](https://img.shields.io/discord/1255160891062620252?color=7289da&label=discord)](https://discord.com/invite/wkAbSuPWpr)
 
-[Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/documentation)
+[Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/mcp-server)
 
 ## Sponsored by systemprompt.io
 
