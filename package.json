@@ -1,5 +1,5 @@
 {
-  "name": "@systemprompt/mcp-server",
+  "name": "@systemprompt/systemprompt-mcp-server",
   "version": "1.0.0",
   "description": "Complete example MCP server implementation with full specification support, type safety, and production-ready architecture. Demonstrates OAuth 2.1, tools, prompts, sampling, and notifications using Reddit as a real-world integration.",
   "type": "module",

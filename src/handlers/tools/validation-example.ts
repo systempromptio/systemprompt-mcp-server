@@ -10,7 +10,7 @@ import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
 // Initialize AJV for schema validation
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv({ allErrors: true, code: { esm: true } });
 // Add format validators including email
 addFormats(ajv);
 

@@ -1,6 +1,6 @@
 # systemprompt-mcp-reddit
 
-[![npm version](https://img.shields.io/npm/v/systemprompt-mcp-reddit.svg)](https://www.npmjs.com/package/systemprompt-mcp-reddit)
+[![npm version](https://img.shields.io/npm/v/@systemprompt/systemprompt-mcp-server.svg)](https://www.npmjs.com/package/@systemprompt/systemprompt-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/tyingshoelaces_?style=social)](https://twitter.com/tyingshoelaces_)
 [![Discord](https://img.shields.io/discord/1255160891062620252?color=7289da&label=discord)](https://discord.com/invite/wkAbSuPWpr)
@@ -106,14 +106,70 @@ This repository serves as the **gold standard** for MCP server implementations, 
 
 ## 🚀 Quick Start
 
+### 🐳 Simplest Installation (Docker with npx)
+
+Run the server instantly with Docker - no installation required:
+
+#### Step 1: Create Reddit App & Initial Config
+
+1. Create a Reddit app at [reddit.com/prefs/apps](https://reddit.com/prefs/apps)
+   - Choose "script" type
+   - Set redirect URI: `http://localhost:3000/oauth/reddit/callback`
+
+2. Create initial `.env` file:
+```bash
+cat > .env << EOF
+REDDIT_CLIENT_ID=your_reddit_client_id
+REDDIT_CLIENT_SECRET=your_reddit_client_secret
+JWT_SECRET=any_random_string_here
+EOF
+```
+
+#### Step 2: Run the Server
+
+```bash
+# Run with Docker (pulls image automatically)
+docker run -it --rm \
+  -p 3000:3000 \
+  --env-file .env \
+  --name mcp-reddit \
+  node:20-slim \
+  npx @systemprompt/systemprompt-mcp-server
+```
+
+#### Step 3: Complete OAuth Authentication
+
+1. In your MCP client, connect to `http://localhost:3000`
+2. The OAuth flow will start automatically
+3. Authorize the app in your browser
+4. Copy the returned OAuth token
+
+#### Step 4: Update Environment with Token
+
+```bash
+# Stop the container (Ctrl+C)
+
+# Add the OAuth token to your .env file
+echo "OAUTH_ACCESS_TOKEN=your_oauth_token_here" >> .env
+
+# Restart with the token
+docker run -it --rm \
+  -p 3000:3000 \
+  --env-file .env \
+  node:20-slim \
+  npx @systemprompt/systemprompt-mcp-server
+```
+
+Now you can use all Reddit tools with your authenticated session!
+
 ### Installation
 
 ```bash
 # Via npm
-npm install -g @systemprompt/mcp-server
+npm install -g @systemprompt/systemprompt-mcp-server
 
 # Via npx (no installation)
-npx @systemprompt/mcp-server
+npx @systemprompt/systemprompt-mcp-server
 
 # Clone for development
 git clone https://github.com/systempromptio/systemprompt-mcp-server.git
