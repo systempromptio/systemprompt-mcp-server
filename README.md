@@ -816,15 +816,9 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 🔗 Related Projects
 
-- **[Interactive Implementation Guide](https://systemprompt.io/mcp-server-implementation)**: Live testing and tutorial
+- **[Interactive Implementation Guide](https://systemprompt.io/mcp-server)**: Live testing and tutorial
 - **[MCP Specification](https://spec.modelcontextprotocol.io)**: Official MCP documentation
-- **[Multimodal MCP Client](https://github.com/Ejb503/multimodal-mcp-client)**: Voice-powered MCP client
-- **[systemprompt.io Documentation](https://systemprompt.io/docs)**: Platform documentation
-
-## 📺 Demo Videos
-
-- **[Reddit MCP OAuth Flow](https://www.youtube.com/watch?v=JA71OM3Se8Y)**: Complete OAuth implementation walkthrough
-- **[Reddit Integration Demo](https://www.youtube.com/watch?v=SOX407rP1p4)**: Voice-controlled Reddit browsing
+- **[systemprompt.io Documentation](https://systemprompt.io/documentation)**: Platform documentation
 
 ## 📄 License
 
