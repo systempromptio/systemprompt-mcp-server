@@ -1,17 +1,17 @@
 /**
  * @file Server configuration management
  * @module server/config
- * 
+ *
  * @remarks
  * This module manages all server configuration including environment variables,
  * OAuth settings, and validation. It provides a centralized configuration
  * object that is used throughout the application.
- * 
+ *
  * Required environment variables:
  * - REDDIT_CLIENT_ID: OAuth2 client ID from Reddit app
  * - REDDIT_CLIENT_SECRET: OAuth2 client secret
  * - JWT_SECRET: Secret key for signing JWT tokens
- * 
+ *
  * Optional environment variables:
  * - OAUTH_ISSUER: Base URL for OAuth endpoints
  * - REDIRECT_URL: OAuth callback URL
@@ -20,12 +20,12 @@
  * - REDDIT_USERNAME: Default Reddit username
  */
 
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 /**
  * Server configuration interface
- * 
+ *
  * @remarks
  * Defines all configuration values required by the server.
  * These values are typically loaded from environment variables.
@@ -51,7 +51,7 @@ export interface ServerConfig {
 
 /**
  * Server configuration object
- * 
+ *
  * @remarks
  * This object is populated from environment variables with sensible defaults.
  * In production, OAUTH_ISSUER defaults to the Smithery server URL.
@@ -63,11 +63,13 @@ export const CONFIG: ServerConfig = {
   JWT_SECRET: process.env.JWT_SECRET!,
   OAUTH_ISSUER:
     process.env.OAUTH_ISSUER ||
-    (process.env.NODE_ENV === 'production'
-      ? 'https://systemprompt-mcp-reddit.example.com'
-      : 'http://localhost:3000'),
-  REDIRECT_URL: process.env.REDIRECT_URL || `${process.env.OAUTH_ISSUER || 'http://localhost:3000'}/oauth/reddit/callback`,
-  PORT: process.env.PORT || '3000',
+    (process.env.NODE_ENV === "production"
+      ? "https://systemprompt-mcp-reddit.example.com"
+      : "http://localhost:3000"),
+  REDIRECT_URL:
+    process.env.REDIRECT_URL ||
+    `${process.env.OAUTH_ISSUER || "http://localhost:3000"}/oauth/reddit/callback`,
+  PORT: process.env.PORT || "3000",
   /**
    * Reddit API User-Agent string identifying your application
    * @remarks
@@ -77,7 +79,7 @@ export const CONFIG: ServerConfig = {
    * @example 'linux:my-reddit-app:v1.0.0 (by /u/my_developer_account)'
    * @see {@link https://github.com/reddit-archive/reddit/wiki/API} Reddit API Rules
    */
-  REDDIT_USER_AGENT: process.env.REDDIT_USER_AGENT || 'linux:systemprompt-mcp-reddit:v2.0.0',
+  REDDIT_USER_AGENT: process.env.REDDIT_USER_AGENT || "linux:systemprompt-mcp-reddit:v2.0.0",
   /**
    * Reddit username of the developer who registered the OAuth app
    * @remarks
@@ -86,7 +88,7 @@ export const CONFIG: ServerConfig = {
    * Do NOT use end user usernames here - those come from OAuth tokens.
    * @example 'my_developer_account' (without the /u/ prefix)
    */
-  REDDIT_USERNAME: process.env.REDDIT_USERNAME || 'reddit-user',
+  REDDIT_USERNAME: process.env.REDDIT_USERNAME || "reddit-user",
 } as const;
 
 /**
@@ -94,7 +96,11 @@ export const CONFIG: ServerConfig = {
  * @throws {Error} Thrown if any required environment variable is missing
  * @internal
  */
-const requiredEnvVars: (keyof ServerConfig)[] = ['REDDIT_CLIENT_ID', 'REDDIT_CLIENT_SECRET', 'JWT_SECRET'];
+const requiredEnvVars: (keyof ServerConfig)[] = [
+  "REDDIT_CLIENT_ID",
+  "REDDIT_CLIENT_SECRET",
+  "JWT_SECRET",
+];
 for (const envVar of requiredEnvVars) {
   if (!CONFIG[envVar]) {
     throw new Error(`Missing required environment variable: ${envVar}`);
@@ -103,7 +109,7 @@ for (const envVar of requiredEnvVars) {
 
 /**
  * List of valid OAuth redirect URIs
- * 
+ *
  * @remarks
  * These URIs are whitelisted for OAuth callbacks to prevent redirect attacks.
  * The list includes:
@@ -112,16 +118,13 @@ for (const envVar of requiredEnvVars) {
  * - Smithery server callback
  * - Local development callbacks
  * - Configured redirect URL from environment
- * 
+ *
  * Any OAuth callback must match one of these URIs exactly.
  */
 export const VALID_REDIRECT_URIS = [
-  'systemprompt://oauth/callback',
-  'https://systemprompt.io/callback',
-  'https://systemprompt-mcp-reddit.example.com/oauth/reddit/callback',
-  'http://localhost:3000/oauth/reddit/callback',
-  'http://localhost:5173/oauth/reddit/callback',
-  'http://localhost:6274/oauth/callback/debug',
+  "http://localhost:3000/oauth/reddit/callback",
+  "http://localhost:5173/oauth/reddit/callback",
+  "http://localhost:6274/oauth/callback/debug",
   `${CONFIG.OAUTH_ISSUER}/oauth/reddit/callback`,
   CONFIG.REDIRECT_URL,
 ];

@@ -1,12 +1,11 @@
 # systemprompt-mcp-reddit
 
 [![npm version](https://img.shields.io/npm/v/systemprompt-mcp-reddit.svg)](https://www.npmjs.com/package/systemprompt-mcp-reddit)
-[![smithery badge](https://smithery.ai/badge/systemprompt-mcp-reddit)](https://smithery.ai/server/systemprompt-mcp-reddit)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/tyingshoelaces_?style=social)](https://twitter.com/tyingshoelaces_)
 [![Discord](https://img.shields.io/discord/1255160891062620252?color=7289da&label=discord)](https://discord.com/invite/wkAbSuPWpr)
 
-[Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/documentation) | [Blog](https://tyingshoelaces.com)
+[Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/documentation)
 
 ## 💖 Sponsored by systemprompt.io
 
@@ -23,7 +22,9 @@ Your support helps us continue creating valuable open source tools for the AI co
 
 > 🚀 **Learn More**: For an interactive walkthrough of this implementation with live SDK testing, visit [systemprompt.io/mcp-server-implementation](https://systemprompt.io/mcp-server-implementation)
 
-A production-ready Model Context Protocol (MCP) server that demonstrates the **complete MCP specification** including OAuth 2.1, sampling, elicitation, structured data validation, and real-time notifications. This implementation enables AI assistants to interact with Reddit through a secure, scalable architecture.
+A production-ready Model Context Protocol (MCP) server that demonstrates the **complete MCP specification** including OAuth 2.1, sampling, elicitation, structured data validation, and real-time notifications. 
+
+**This implementation uses Reddit as a real-world example to demonstrate OAuth 2.1 flow and advanced MCP features**, but the architecture is designed to be easily adapted for any API that requires OAuth authentication.
 
 This server works with any MCP-compliant client that supports advanced features like sampling and notifications.
 
@@ -40,12 +41,24 @@ Test it yourself: `npm run inspector`
 
 ## 🌟 Why This Implementation Matters
 
+### OAuth 2.1 Demonstration with Reddit
+
+This implementation uses **Reddit's API as a real-world example** to demonstrate how to build a complete OAuth 2.1 flow in an MCP server. Reddit was chosen because:
+- It requires OAuth authentication for most operations
+- It provides a rich API for demonstrating various MCP features
+- It's a well-documented, publicly accessible API
+- It showcases real-world authentication challenges and solutions
+
+**Note**: While this server uses Reddit, the OAuth implementation and architecture patterns are designed to be easily adapted for any OAuth-based API (GitHub, Google, Slack, etc.).
+
+### Key Features Demonstrated
+
 This repository serves as the **gold standard** for MCP server implementations, showcasing:
 
 - **Complete MCP Spec Coverage**: Every feature from OAuth to sampling is implemented
 - **Production Architecture**: Multi-user sessions, security, and scalability built-in
 - **Developer Experience**: Clean code structure perfect for learning or forking
-- **Real-World Integration**: Connects to Reddit's API with full authentication flow
+- **Real-World OAuth Integration**: Full OAuth 2.1 flow with PKCE, JWT tokens, and session management
 - **AI-Native Design**: Deep integration with LLMs for content generation and analysis
 
 ## 📚 Table of Contents
@@ -97,14 +110,14 @@ This repository serves as the **gold standard** for MCP server implementations, 
 
 ```bash
 # Via npm
-npm install -g systemprompt-mcp-reddit
+npm install -g @systemprompt/mcp-server
 
 # Via npx (no installation)
-npx systemprompt-mcp-reddit
+npx @systemprompt/mcp-server
 
 # Clone for development
-git clone https://github.com/Ejb503/systemprompt-mcp-reddit.git
-cd systemprompt-mcp-reddit
+git clone https://github.com/systempromptio/systemprompt-mcp-server.git
+cd systemprompt-mcp-server
 npm install
 npm run build
 ```
@@ -130,7 +143,8 @@ PORT=3000                        # Server port (default: 3000)
 OAUTH_ISSUER=http://localhost:3000  # OAuth issuer URL
 REDIRECT_URL=http://localhost:3000/oauth/reddit/callback  # OAuth redirect
 REDDIT_USER_AGENT=linux:systemprompt-mcp-reddit:v2.0.0   # Reddit user agent
-DEBUG=true                       # Enable debug logging
+REDDIT_USERNAME=your_reddit_username  # Your Reddit username (optional)
+LOG_LEVEL=debug                  # Logging level (debug, info, warn, error)
 ```
 
 **Note**: Environment variables are required for both local development and Docker deployment.
@@ -138,14 +152,19 @@ DEBUG=true                       # Enable debug logging
 ### Running the Server
 
 ```bash
-# Production
-npm start
+# Build the TypeScript code
+npm run build
 
-# Development with hot reload
-npm run dev
+# Run the built server
+node build/index.js
+
+# Development with watch mode
+npm run watch
+# In another terminal:
+node build/index.js
 
 # With Docker
-docker-compose up
+npm run docker
 ```
 
 ## 🏗️ Architecture
@@ -512,26 +531,31 @@ npm install
 # Build TypeScript
 npm run build
 
-# Development mode with hot reload
-npm run dev
+# Watch mode for development
+npm run watch
 
-# Test MCP connection with prompts
-npm run live:test
+# Run tests (requires OAuth tokens - see below)
+npm run test
 
-# Test tools specifically
-npm run test:tools
+# Run end-to-end tests
+npm run e2e
 
-# Launch MCP Inspector
-npm run inspector
+# Build and run with Docker
+npm run docker
 ```
 
-### Testing with MCP Inspector
+### Testing
+
+#### Testing with MCP Inspector
 
 The server is fully compatible with the [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector), which provides a powerful interface for testing all MCP features:
 
 ```bash
-# Build and launch the inspector with the server
-npm run inspector
+# Build the server first
+npm run build
+
+# Launch the inspector with the built server
+npx @modelcontextprotocol/inspector build/index.js
 ```
 
 This command will:
@@ -556,6 +580,71 @@ The inspector provides:
 - Sampling request/response inspection
 - Real-time notification monitoring
 - Session management visibility
+
+#### Setting Up for Testing
+
+**Important**: To run tests that interact with Reddit, you need to complete the OAuth flow first:
+
+1. **Start the server and open MCP Inspector**:
+   ```bash
+   # Build and start the server
+   npm run build
+   node build/index.js
+   
+   # In another terminal, open the MCP Inspector
+   npx @modelcontextprotocol/inspector build/index.js
+   ```
+
+2. **Complete OAuth Authentication**:
+   - The Inspector will prompt you to authenticate
+   - Follow the OAuth flow to authorize with Reddit
+   - After successful authentication, the server stores tokens
+
+3. **Save OAuth Tokens for Testing**:
+   - Once authenticated via Inspector, copy the generated tokens
+   - Add them to your `.env` file for persistent testing:
+   ```bash
+   # Add these to your .env after completing OAuth
+   REDDIT_ACCESS_TOKEN=your_access_token
+   REDDIT_REFRESH_TOKEN=your_refresh_token
+   ```
+
+#### Running Tests
+
+```bash
+# Run all tests (requires OAuth tokens in .env)
+npm run test
+
+# Run end-to-end tests
+npm run e2e
+```
+
+#### Testing with Docker
+
+```bash
+# Build and run with Docker
+npm run docker
+
+# Run the server with npx in Docker
+docker run --rm -it \
+  -p 3000:3000 \
+  -e REDDIT_CLIENT_ID=your_id \
+  -e REDDIT_CLIENT_SECRET=your_secret \
+  -e JWT_SECRET=your_jwt_secret \
+  node:18-alpine \
+  npx @systemprompt/mcp-server
+```
+
+#### Manual Testing
+
+```bash
+# Test OAuth flow manually
+curl -X POST http://localhost:3000/mcp/v1/initialize \
+  -H "Content-Type: application/json" \
+  -d '{"protocolVersion": "2024-11-05", "capabilities": {}}'
+
+# The response will include auth details if tokens are needed
+```
 
 ### Docker Development
 
@@ -683,7 +772,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

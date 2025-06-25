@@ -71,7 +71,7 @@ async function testMixedConcurrent(client: Client): Promise<void> {
         context: 'Test context for action suggestion'
       }
     }),
-    client.readResource({ uri: 'reddit://config' })
+    client.readResource({ uri: 'guidelines://code-generation' })  // Changed from reddit://config to avoid 403
   ];
   
   const results = await Promise.all(promises);

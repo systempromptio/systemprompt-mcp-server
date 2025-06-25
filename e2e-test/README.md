@@ -1,191 +1,110 @@
-# MCP Server E2E Test Suite
+# E2E Test Suite for Reddit MCP Server
 
-A comprehensive, world-class test suite for the Reddit MCP Server using the official MCP SDK and bash scripts.
-
-## Structure
-
-```
-e2e-test/
-├── typescript/         # TypeScript tests using MCP SDK
-│   ├── test-tools.ts      # Tests MCP tools functionality
-│   ├── test-prompts.ts    # Tests MCP prompts functionality
-│   ├── test-resources.ts  # Tests MCP resources functionality
-│   ├── test-sampling.ts   # Tests MCP sampling flow
-│   ├── test-concurrent.ts # Tests concurrent operations
-│   └── test-utils.ts      # Shared test utilities
-├── bash-scripts/       # Bash integration tests
-│   ├── run-all.sh            # Runs all bash tests
-│   ├── test-tools.sh         # Basic tool testing
-│   ├── test-concurrent-sessions.sh  # Concurrent session testing
-│   ├── test-concurrent-tools.sh     # Concurrent tool calls
-│   └── test-full-flow.sh           # Full integration flow
-├── index.ts           # Main test runner
-├── package.json       # Test dependencies
-└── tsconfig.json      # TypeScript configuration
-```
+This is a comprehensive test suite for the Reddit MCP Server that validates all MCP functionality.
 
 ## Prerequisites
 
-1. Node.js 18+ installed
-2. MCP server running (locally or via Docker)
-3. Valid `.env` file with:
-   ```env
-   MCP_ACCESS_TOKEN=your-token
-   MCP_BASE_URL=http://127.0.0.1:3000
-   ```
+1. **Docker**: The MCP server must be running in Docker
+2. **Valid MCP JWT Token**: You must have a valid MCP JWT token obtained through the OAuth flow
 
-## Running Tests
+## Understanding the Authentication Flow
 
-### From Root Directory
+The Reddit MCP Server uses a two-layer authentication system:
 
-```bash
-# Run all E2E tests
-npm run test:e2e
+1. **Reddit OAuth**: Users authenticate with Reddit to get Reddit access/refresh tokens
+2. **MCP JWT**: The MCP server wraps Reddit tokens inside its own JWT tokens
 
-# Run specific test suites
-npm run test:e2e:tools      # Tools tests only
-npm run test:e2e:prompts    # Prompts tests only
-npm run test:e2e:resources  # Resources tests only
-npm run test:e2e:sampling   # Sampling tests only
-npm run test:e2e:concurrent # Concurrent tests only
-npm run test:e2e:bash       # Bash scripts only
+### Token Types Explained
 
-# Run with Docker
-npm run test:e2e:docker
+- **Reddit Client ID/Secret**: Your app's credentials from Reddit (configured in server's .env)
+- **Reddit Access/Refresh Tokens**: User's Reddit OAuth tokens (obtained via OAuth flow)
+- **MCP JWT Token**: Server-issued JWT containing Reddit tokens (what tests need)
+
+## Setting Up Authentication
+
+### Step 1: Configure the Server
+
+Create `.env` in the server root with your Reddit app credentials:
+```env
+REDDIT_CLIENT_ID=your_reddit_app_id
+REDDIT_CLIENT_SECRET=your_reddit_app_secret
+JWT_SECRET=your-secure-random-string
 ```
 
-### From Test Directory
+### Step 2: Start the Server
+
+```bash
+docker-compose up -d
+```
+
+### Step 3: Obtain MCP JWT Token
+
+You need to go through the OAuth flow to get a valid MCP JWT token:
+
+1. Make a request to the MCP endpoint without authentication
+2. Follow the OAuth flow URL from the WWW-Authenticate header
+3. Authorize with Reddit
+4. Exchange the authorization code for an MCP JWT token
+
+### Step 4: Configure Tests
+
+Create `e2e-test/.env` with your MCP JWT token:
+```env
+MCP_ACCESS_TOKEN=your-mcp-jwt-token-here
+```
+
+## Running Tests
 
 ```bash
 cd e2e-test
 npm install
-npm test               # Run all tests
-npm test tools         # Run specific suite
-npm run test:bash      # Run bash scripts
+npm test
 ```
 
-## Test Coverage
+### Individual Test Suites
 
-### TypeScript Tests (SDK-based)
-- **Tools**: Tests all MCP tools including discovery, execution, and error handling
-- **Prompts**: Tests prompt listing, retrieval, and argument validation
-- **Resources**: Tests resource discovery, reading, and URI validation
-- **Sampling**: Tests AI sampling flow with tool integration
-- **Concurrent**: Tests concurrent operations and high-volume requests
+- `npm run test:tools` - Test MCP tools
+- `npm run test:prompts` - Test MCP prompts
+- `npm run test:resources` - Test MCP resources
+- `npm run test:sampling` - Test sampling capability
+- `npm run test:concurrent` - Test concurrent operations
 
-### Bash Scripts (HTTP/SSE-based)
-- **Tools**: Direct HTTP testing of tool endpoints
-- **Concurrent Sessions**: Multiple simultaneous MCP sessions
-- **Concurrent Tools**: Parallel tool execution
-- **Full Flow**: End-to-end integration scenarios
+## Test Structure
 
-## Features
-
-- ✅ No duplication between tests
-- ✅ Clean, modular structure
-- ✅ Comprehensive error handling
-- ✅ Colored console output
-- ✅ Detailed test summaries
-- ✅ Both SDK and HTTP testing approaches
-- ✅ Docker support
-- ✅ CI/CD ready
-
-## Writing New Tests
-
-### TypeScript Test Template
-
-```typescript
-import { createMCPClient, log, TestTracker, runTest } from './test-utils.js';
-import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
-
-async function testFeature(client: Client): Promise<void> {
-  // Test implementation
-}
-
-export async function testSuite(): Promise<void> {
-  log.section('🚀 Testing Feature');
-  const tracker = new TestTracker();
-  let client: Client | null = null;
-  
-  try {
-    client = await createMCPClient();
-    await runTest('Feature Test', () => testFeature(client!), tracker);
-    tracker.printSummary();
-  } finally {
-    if (client) await client.close();
-  }
-}
+```
+e2e-test/
+├── typescript/          # TypeScript tests using official MCP SDK
+│   ├── test-tools.ts
+│   ├── test-prompts.ts
+│   ├── test-resources.ts
+│   ├── test-sampling.ts
+│   ├── test-concurrent.ts
+│   └── test-utils.ts    # Shared test utilities
+├── bash-scripts/        # Bash script tests
+│   └── run-all.sh
+├── scripts/
+│   └── check-env.js    # Pre-test environment validation
+└── .env                 # Your MCP JWT token (not committed)
 ```
 
-### Bash Test Template
+## Important Notes
 
+1. **Token Expiry**: MCP JWT tokens expire after 24 hours
+2. **No Hardcoded Tokens**: Never commit tokens to version control
+3. **OAuth Required**: The entire server requires valid Reddit OAuth authentication
+4. **Docker Required**: Tests must run against the Docker container
+
+## Troubleshooting
+
+### "MCP_ACCESS_TOKEN is not set"
+You need to obtain a valid MCP JWT token through the OAuth flow.
+
+### "Invalid or expired access token"
+Your MCP JWT token has expired. Get a new one through the OAuth flow.
+
+### "Connection timeout"
+Ensure the Docker container is running and healthy:
 ```bash
-#!/bin/bash
-set -e
-
-# Load environment
-source ../.env
-
-# Test implementation
-echo "Testing feature..."
-# Add curl commands here
-
-echo "✅ Test passed!"
+docker ps
+docker logs systemprompt-mcp-reddit-mcp-server-full-1
 ```
-
-## Troubleshooting
-
-1. **Connection errors**: Ensure MCP server is running and accessible
-2. **Authentication errors**: Check `MCP_ACCESS_TOKEN` in `.env`
-3. **TypeScript errors**: Run `npm run build` to check compilation
-4. **Bash permission errors**: Run `chmod +x bash-scripts/*.sh`
-
-## Contributing
-
-When adding new tests:
-1. Follow the existing patterns
-2. Add to appropriate category (tools, prompts, etc.)
-3. Update this README
-4. Ensure no duplication with existing tests
-5. Add proper error handling and logging
-- `MCP_REFRESH_TOKEN` - OAuth refresh token (required)
-- `MCP_BASE_URL` - MCP server URL (default: http://localhost:3000)
-
-## Example Output
-
-```
-Reddit MCP Server Test Client
-==================================================
-
-🚀 Initializing MCP Connection
-✅ Connected to systemprompt-mcp-reddit v2.0.0
-ℹ Protocol version: 2024-11-05
-ℹ Server capabilities: tools, sampling, prompts, resources
-
-🔧 Available Tools
-✅ Found 13 tools:
-  analyse_subreddit: Analyse subreddit content and trends using AI assistance
-  get_channel: Get subreddit information and rules
-  get_comment: Get a specific Reddit comment by ID
-  ... (more tools)
-
-📝 Available Prompts
-✅ Found 6 prompts:
-  analyse_subreddit: Analyse a subreddit's content and provide insights
-  create_reddit_comment: Generate a Reddit comment
-  ... (more prompts)
-
-🧪 Testing Tools
-📬 Testing get_notifications...
-✅ Retrieved 3 notifications
-🔍 Testing search_reddit...
-✅ Found 3 posts
-  Top result: JavaScript is now a system language
-    Score: 1234, Comments: 567
-```
-
-## Troubleshooting
-
-- **Connection refused**: Make sure the MCP server is running (`docker-compose up`)
-- **401 Unauthorized**: Your access token may have expired. Generate new tokens through the OAuth flow
-- **Tool errors**: Some tools require specific Reddit permissions. Check the error messages for details

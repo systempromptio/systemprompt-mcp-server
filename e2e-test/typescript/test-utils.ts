@@ -75,6 +75,8 @@ export async function createMCPClient(): Promise<Client> {
     throw new Error('Missing MCP_ACCESS_TOKEN in environment');
   }
   
+  log.debug(`Connecting to MCP server at ${MCP_BASE_URL}`);
+  
   const transport = new StreamableHTTPClientTransport(
     new URL('/mcp', MCP_BASE_URL),
     {
@@ -103,7 +105,14 @@ export async function createMCPClient(): Promise<Client> {
     }
   );
   
-  await client.connect(transport);
+  // Add timeout for connection
+  const connectPromise = client.connect(transport);
+  const timeoutPromise = new Promise((_, reject) => 
+    setTimeout(() => reject(new Error('Connection timeout after 10s')), 10000)
+  );
+  
+  await Promise.race([connectPromise, timeoutPromise]);
+  log.debug('Successfully connected to MCP server');
   return client;
 }
 

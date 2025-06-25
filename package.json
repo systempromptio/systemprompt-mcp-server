@@ -26,6 +26,7 @@
     "build": "tsc && tsc-alias && chmod +x build/index.js && echo \"export * from './config.js';\nexport * from './oauth.js';\nexport * from './mcp.js';\nexport * from './auth-store.js';\nexport * from './types.js';\" > build/server/index.js",
     "watch": "tsc --watch",
     "docker": "docker-compose build && docker-compose up -d",
+    "test": "cd e2e-test && npm test",
     "e2e": "cd e2e-test && npm install && npm test"
   },
   "repository": {

@@ -4,8 +4,9 @@
   "description": "World-class test suite for Reddit MCP Server",
   "type": "module",
   "scripts": {
+    "check-env": "node scripts/check-env.js",
     "build": "tsc",
-    "test": "npm run build && npm run test:all",
+    "test": "npm run check-env && npm run build && npm run test:all",
     "test:all": "node dist/index.js",
     "test:tools": "node dist/typescript/test-tools.js",
     "test:prompts": "node dist/typescript/test-prompts.js",
