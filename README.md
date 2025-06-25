@@ -20,7 +20,7 @@ We believe in advancing the MCP ecosystem by providing high-quality, production-
 
 Your support helps us continue creating valuable open source tools for the AI community!
 
-> 🚀 **Learn More**: For an interactive walkthrough of this implementation with live SDK testing, visit [systemprompt.io/mcp-server-implementation](https://systemprompt.io/mcp-server-implementation)
+> 🚀 **Learn More**: For an interactive walkthrough of this implementation with live SDK testing, visit [systemprompt.io/mcp-server](https://systemprompt.io/mcp-server)
 
 A production-ready Model Context Protocol (MCP) server that demonstrates the **complete MCP specification** including OAuth 2.1, sampling, elicitation, structured data validation, and real-time notifications. 
 
