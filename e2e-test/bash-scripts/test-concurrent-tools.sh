@@ -5,7 +5,7 @@
 set -e
 source .env
 
-SERVER_URL="${MCP_BASE_URL:-http://localhost:3000}"
+SERVER_URL="${MCP_BASE_URL:-http://localhost:${PORT:-3000}}"
 ACCESS_TOKEN="${MCP_ACCESS_TOKEN}"
 
 # Colors

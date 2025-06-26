@@ -13,7 +13,7 @@ import { config } from 'dotenv';
 // Load environment configuration
 config({ path: '.env' });
 
-export const MCP_BASE_URL = process.env.MCP_BASE_URL || 'http://127.0.0.1:3000';
+export const MCP_BASE_URL = process.env.MCP_BASE_URL || `http://127.0.0.1:${process.env.PORT || '3000'}`;
 export const ACCESS_TOKEN = process.env.MCP_ACCESS_TOKEN;
 
 /**

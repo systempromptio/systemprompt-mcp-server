@@ -65,10 +65,10 @@ export const CONFIG: ServerConfig = {
     process.env.OAUTH_ISSUER ||
     (process.env.NODE_ENV === "production"
       ? "https://systemprompt-mcp-reddit.example.com"
-      : "http://localhost:3000"),
+      : `http://localhost:${process.env.PORT || "3000"}`),
   REDIRECT_URL:
     process.env.REDIRECT_URL ||
-    `${process.env.OAUTH_ISSUER || "http://localhost:3000"}/oauth/reddit/callback`,
+    `${process.env.OAUTH_ISSUER || `http://localhost:${process.env.PORT || "3000"}`}/oauth/reddit/callback`,
   PORT: process.env.PORT || "3000",
   /**
    * Reddit API User-Agent string identifying your application
@@ -122,7 +122,7 @@ for (const envVar of requiredEnvVars) {
  * Any OAuth callback must match one of these URIs exactly.
  */
 export const VALID_REDIRECT_URIS = [
-  "http://localhost:3000/oauth/reddit/callback",
+  `http://localhost:${CONFIG.PORT}/oauth/reddit/callback`,
   "http://localhost:5173/oauth/reddit/callback",
   "http://localhost:6274/oauth/callback/debug",
   `${CONFIG.OAUTH_ISSUER}/oauth/reddit/callback`,
