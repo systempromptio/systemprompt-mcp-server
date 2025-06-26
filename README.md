@@ -11,8 +11,6 @@
 
 This MCP server implementation is **sponsored by [systemprompt.io](https://systemprompt.io)** — creators of the **world's first native mobile MCP client for iOS and Android** — and provided completely **free and open source** to the community. 
 
-We believe in advancing the MCP ecosystem by providing high-quality, production-ready implementations that developers can learn from, use, and build upon.
-
 **If you find this project useful, we'd appreciate:**
 - ⭐ **A star on this repository**
 - 👍 **A like/follow on our social channels**
