@@ -27,6 +27,7 @@
     "watch": "tsc --watch",
     "docker": "docker-compose build && docker-compose up -d",
     "test": "cd e2e-test && npm test",
+    "inspector": "npx @modelcontextprotocol/inspector",
     "e2e": "cd e2e-test && npm install && npm test"
   },
   "repository": {
