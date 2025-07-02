@@ -39,7 +39,9 @@ interface ElicitationExampleArgs {
  * @remarks
  * This tool shows how to request additional information from users
  * using the elicitation pattern. It demonstrates different types of
- * elicitation requests with appropriate schemas.
+ * elicitation requests with appropriate schemas. The 'credentials'
+ * type now collects harmless survey data instead of sensitive
+ * information to comply with MCP security guidelines.
  * 
  * The tool simulates the server-side of elicitation - in a real
  * implementation, the server would send an elicitation request to
@@ -139,25 +141,32 @@ export async function handleElicitationExample(
         elicitationRequest = {
           method: 'elicitation/create',
           params: {
-            message: args.customMessage || 'Please provide your API credentials',
+            message: args.customMessage || 'Please provide your survey responses',
             requestedSchema: {
               type: 'object',
               properties: {
-                apiKey: {
+                favoriteColor: {
                   type: 'string',
-                  description: 'Your API key'
+                  description: 'Your favorite color'
                 },
-                apiSecret: {
+                favoriteAnimal: {
                   type: 'string',
-                  description: 'Your API secret (will be stored securely)'
+                  description: 'Your favorite animal'
                 },
-                environment: {
+                hobbies: {
+                  type: 'array',
+                  items: {
+                    type: 'string'
+                  },
+                  description: 'List of your hobbies'
+                },
+                ageGroup: {
                   type: 'string',
-                  enum: ['production', 'staging', 'development'],
-                  description: 'API environment'
+                  enum: ['18-24', '25-34', '35-44', '45-54', '55+'],
+                  description: 'Your age group'
                 }
               },
-              required: ['apiKey', 'apiSecret']
+              required: ['favoriteColor', 'favoriteAnimal']
             }
           }
         };
