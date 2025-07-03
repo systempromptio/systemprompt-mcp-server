@@ -7,18 +7,29 @@
 
 [Website](https://systemprompt.io) | [Documentation](https://systemprompt.io/mcp-server)
 
-## Sponsored by systemprompt.io
+## About SystemPrompt.io
 
-This MCP server implementation is **sponsored by [systemprompt.io](https://systemprompt.io)** — creators of the **world's first native mobile MCP client for iOS and Android** — and provided completely **free and open source** to the community. 
+This MCP server implementation is **sponsored by [SystemPrompt.io](https://systemprompt.io)** — a pioneering platform developing native mobile voice-controlled AI orchestration solutions for developers. SystemPrompt.io is creating the **world's first native mobile MCP client for iOS and Android**, enabling developers to interact with AI systems and execute complex workflows through natural language voice commands.
 
-**If you find this project useful, we'd appreciate:**
-- ⭐ **A star on this repository**
-- 👍 **A like/follow on our social channels**
-- 🔗 **Sharing with your network**
+### Project Overview
 
-Your support helps us continue creating valuable open source tools for the AI community!
+[SystemPrompt.io](https://systemprompt.io/documentation) represents an innovative approach to AI-powered development:
 
-> 🚀 **Learn More**: For an interactive walkthrough of this implementation with live SDK testing, visit [systemprompt.io/mcp-server](https://systemprompt.io/mcp-server)
+- **Native Mobile Architecture** - Purpose-built iOS and Android applications optimized for voice interaction
+- **Voice-First Design** - Natural language processing enables hands-free coding and system orchestration
+- **Early-Stage Innovation** - Currently at version 0.01, actively iterating based on community feedback
+- **Community-Driven Development** - Self-funded initiative focused on collaborative innovation
+
+This Reddit MCP server exemplifies our commitment to open-source development and serves as a production-ready reference implementation for the MCP specification. It demonstrates our technical expertise while providing the community with a robust, fully-featured MCP server implementation.
+
+**If you find this project valuable, please consider:**
+- ⭐ **Starring this repository** to show your support
+- 📢 **Following our technical updates** on social channels
+- 🔗 **Sharing with your professional network**
+
+Your engagement helps sustain our open-source contributions and drives continued innovation.
+
+> 🚀 **Technical Deep Dive**: For an interactive exploration of this implementation with live SDK testing, visit [systemprompt.io/mcp-server](https://systemprompt.io/mcp-server)
 
 A production-ready Model Context Protocol (MCP) server that demonstrates the **complete MCP specification** including OAuth 2.1, sampling, elicitation, structured data validation, and real-time notifications. 
 
