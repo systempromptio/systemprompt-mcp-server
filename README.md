@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/systempromptio-systemprompt-mcp-server-badge.png)](https://mseep.ai/app/systempromptio-systemprompt-mcp-server)
+
 # systemprompt-mcp-server
 
 [![npm version](https://img.shields.io/npm/v/@systemprompt/systemprompt-mcp-server.svg)](https://www.npmjs.com/package/@systemprompt/systemprompt-mcp-server)
